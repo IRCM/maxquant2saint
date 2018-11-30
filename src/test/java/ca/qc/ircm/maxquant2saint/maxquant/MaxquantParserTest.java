@@ -39,6 +39,7 @@ public class MaxquantParserTest {
     maxquantParser = new MaxquantParser(configuration);
     when(configuration.getHeaders()).thenReturn(configurationHeaders);
     when(configurationHeaders.getGeneNames()).thenReturn("Gene names");
+    when(configurationHeaders.getProteinIds()).thenReturn("Protein IDs");
   }
 
   @Test
@@ -47,6 +48,9 @@ public class MaxquantParserTest {
     maxquantParser.parse(file, "LFQ intensity (.*)", handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);
+    assertEquals(5, group.proteinIds.size());
+    assertEquals("Q9UHW5", group.proteinIds.get(0));
+    assertEquals("H0YHZ5", group.proteinIds.get(4));
     assertEquals(1, group.geneNames.size());
     assertEquals("GPN3", group.geneNames.get(0));
     assertEquals(19, group.intensities.size());
@@ -56,6 +60,9 @@ public class MaxquantParserTest {
     assertEquals(10101000.0, group.intensities.get("POLR1C_WT_02"), DELTA);
     assertEquals(5490800.0, group.intensities.get("POLR1C_R279Q_03"), DELTA);
     group = groupCaptor.getAllValues().get(18);
+    assertEquals(6, group.proteinIds.size());
+    assertEquals("Q9NW08", group.proteinIds.get(0));
+    assertEquals("F8VRU2", group.proteinIds.get(5));
     assertEquals(2, group.geneNames.size());
     assertEquals("POLR3B", group.geneNames.get(0));
     assertEquals("DKFZp686D10173", group.geneNames.get(1));
@@ -73,6 +80,9 @@ public class MaxquantParserTest {
     maxquantParser.parse(file, "Peptides (.*)", handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);
+    assertEquals(5, group.proteinIds.size());
+    assertEquals("Q9UHW5", group.proteinIds.get(0));
+    assertEquals("H0YHZ5", group.proteinIds.get(4));
     assertEquals(1, group.geneNames.size());
     assertEquals("GPN3", group.geneNames.get(0));
     assertEquals(19, group.intensities.size());
@@ -82,6 +92,9 @@ public class MaxquantParserTest {
     assertEquals(7.0, group.intensities.get("POLR1C_WT_02"), DELTA);
     assertEquals(5.0, group.intensities.get("POLR1C_R279Q_03"), DELTA);
     group = groupCaptor.getAllValues().get(18);
+    assertEquals(6, group.proteinIds.size());
+    assertEquals("Q9NW08", group.proteinIds.get(0));
+    assertEquals("F8VRU2", group.proteinIds.get(5));
     assertEquals(2, group.geneNames.size());
     assertEquals("POLR3B", group.geneNames.get(0));
     assertEquals("DKFZp686D10173", group.geneNames.get(1));

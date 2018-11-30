@@ -16,6 +16,7 @@ public class MaxquantConfigurationTest {
 
   @Test
   public void defaultValues() throws Throwable {
+    assertEquals("Protein IDs", configuration.getHeaders().getProteinIds());
     assertEquals("Gene names", configuration.getHeaders().getGeneNames());
     assertEquals("LFQ intensity (.*)", configuration.getHeaders().getLfq());
     assertEquals("MS/MS count (.*)", configuration.getHeaders().getMsmsCount());

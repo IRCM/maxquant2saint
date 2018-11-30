@@ -20,6 +20,7 @@ public class MaxquantConfiguration {
   }
 
   public static class Headers {
+    private String proteinIds;
     private String geneNames;
     private String lfq;
     private String msmsCount;
@@ -28,6 +29,14 @@ public class MaxquantConfiguration {
     private String razorPeptides;
     private String uniquePeptides;
     private String coverage;
+
+    public String getProteinIds() {
+      return proteinIds;
+    }
+
+    public void setProteinIds(String proteinIds) {
+      this.proteinIds = proteinIds;
+    }
 
     public String getGeneNames() {
       return geneNames;

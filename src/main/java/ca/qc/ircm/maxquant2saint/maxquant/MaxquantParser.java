@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MaxquantParser {
   private static final String SEPARATOR = "\t";
-  private static final String GENE_NAME_SEPARATOR = ";";
+  private static final String ELEMENT_SEPARATOR = ";";
   @Inject
   private MaxquantConfiguration configuration;
 
@@ -59,6 +59,11 @@ public class MaxquantParser {
             matcher.matches();
             return new SampleHeader(matcher.group(1), column);
           }).collect(Collectors.toList());
+      Pattern proteinIdsHeaderPattern = Pattern.compile(configuration.getHeaders().getProteinIds());
+      int proteinIdsColumn = IntStream.range(0, headers.length)
+          .filter(column -> proteinIdsHeaderPattern.matcher(headers[column]).matches()).findFirst()
+          .orElseThrow(() -> new IllegalStateException(
+              "Column " + configuration.getHeaders().getProteinIds() + " is missing"));
       Pattern geneNamesHeaderPattern = Pattern.compile(configuration.getHeaders().getGeneNames());
       int geneNamesColumn = IntStream.range(0, headers.length)
           .filter(column -> geneNamesHeaderPattern.matcher(headers[column]).matches()).findFirst()
@@ -68,7 +73,8 @@ public class MaxquantParser {
       while ((line = reader.readLine()) != null) {
         String[] columns = line.split(SEPARATOR, -1);
         MaxquantProteinGroup group = new MaxquantProteinGroup();
-        group.geneNames = Arrays.asList(columns[geneNamesColumn].split(GENE_NAME_SEPARATOR));
+        group.proteinIds = Arrays.asList(columns[proteinIdsColumn].split(ELEMENT_SEPARATOR));
+        group.geneNames = Arrays.asList(columns[geneNamesColumn].split(ELEMENT_SEPARATOR));
         group.intensities = sampleHeaders.stream().collect(Collectors.toMap(header -> header.name,
             header -> Double.parseDouble(columns[header.index])));
         handler.accept(group);

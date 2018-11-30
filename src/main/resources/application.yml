@@ -21,6 +21,7 @@ spring:
 
 maxquant:
   headers:
+    protein-ids: Protein IDs
     gene-names: Gene names
     lfq: LFQ intensity (.*)
     msms-count: MS/MS count (.*)
