@@ -17,15 +17,24 @@
 
 package ca.qc.ircm.maxquant2saint;
 
-import javafx.application.Application;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Main class.
  */
 @SpringBootApplication
 public class Main {
+  /**
+   * Starts application.
+   *
+   * @param args
+   *          arguments
+   */
   public static void main(String[] args) {
-    Application.launch(args);
+    ApplicationContext context = SpringApplication.run(Main.class, args);
+    MainService service = context.getBean(MainService.class);
+    service.main(args);
   }
 }
