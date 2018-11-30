@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SequenceService {
   private static final Logger logger = LoggerFactory.getLogger(SequenceService.class);
+  @Inject
   private FastaConfiguration configuration;
 
   protected SequenceService() {
