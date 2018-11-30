@@ -19,6 +19,11 @@ spring:
   application:
     name: maxquant2saint
 
+conversion:
+  file: proteinGroups.txt
+  fasta: human.fasta
+  intensity: LFQ
+
 maxquant:
   headers:
     protein-ids: Protein IDs
@@ -40,6 +45,16 @@ logging:
 ---
 spring:
   profiles: test
+
+conversion:
+  baits:
+    flag: 
+      - flag_01
+      - flag_02
+      - flag_03
+    polr2a: 
+      - polr2a_01
+      - polr2a_02
 
 logging:
   file: test.log
