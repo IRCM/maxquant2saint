@@ -28,6 +28,35 @@ public class MaxquantConfiguration {
   public static final String PREFIX = "maxquant";
   private Headers headers;
 
+  /**
+   * Returns intensity header pattern.
+   * 
+   * @param intensity
+   *          intensity
+   * @return intensity header pattern
+   */
+  public String getHeader(Intensity intensity) {
+    switch (intensity) {
+      case LFQ:
+        return headers.lfq;
+      case MSMS_COUNT:
+        return headers.msmsCount;
+      case INTENSITY:
+        return headers.intensity;
+      case PEPTIDES:
+        return headers.peptides;
+      case RAZOR_PEPTIDES:
+        return headers.razorPeptides;
+      case UNIQUE_PEPTIDES:
+        return headers.uniquePeptides;
+      case COVERAGE:
+        return headers.coverage;
+      default:
+        throw new AssertionError(
+            Intensity.class.getSimpleName() + " " + intensity + " not covered in switch");
+    }
+  }
+
   public Headers getHeaders() {
     return headers;
   }

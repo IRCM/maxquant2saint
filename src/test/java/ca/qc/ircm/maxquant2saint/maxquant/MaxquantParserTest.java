@@ -17,6 +17,8 @@
 
 package ca.qc.ircm.maxquant2saint.maxquant;
 
+import static ca.qc.ircm.maxquant2saint.maxquant.Intensity.LFQ;
+import static ca.qc.ircm.maxquant2saint.maxquant.Intensity.PEPTIDES;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,12 +59,14 @@ public class MaxquantParserTest {
     when(configuration.getHeaders()).thenReturn(configurationHeaders);
     when(configurationHeaders.getGeneNames()).thenReturn("Gene names");
     when(configurationHeaders.getProteinIds()).thenReturn("Protein IDs");
+    when(configuration.getHeader(LFQ)).thenReturn("LFQ intensity (.*)");
+    when(configuration.getHeader(PEPTIDES)).thenReturn("Peptides (.*)");
   }
 
   @Test
   public void parse_Lfq() throws Throwable {
     Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
-    maxquantParser.parse(file, "LFQ intensity (.*)", handler);
+    maxquantParser.parse(file, LFQ, handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);
     assertEquals(5, group.proteinIds.size());
@@ -94,7 +98,7 @@ public class MaxquantParserTest {
   @Test
   public void parse_Peptides() throws Throwable {
     Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
-    maxquantParser.parse(file, "Peptides (.*)", handler);
+    maxquantParser.parse(file, PEPTIDES, handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);
     assertEquals(5, group.proteinIds.size());

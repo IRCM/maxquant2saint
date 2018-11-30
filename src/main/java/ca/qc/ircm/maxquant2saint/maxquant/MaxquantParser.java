@@ -53,14 +53,14 @@ public class MaxquantParser {
    *
    * @param file
    *          file
-   * @param intensityHeader
-   *          pattern of the header of intensities column to parse
+   * @param intensity
+   *          intensities to parse
    * @param handler
    *          handles protein groups
    * @throws IOException
    *           could not parse file
    */
-  public void parse(Path file, String intensityHeader, Consumer<MaxquantProteinGroup> handler)
+  public void parse(Path file, Intensity intensity, Consumer<MaxquantProteinGroup> handler)
       throws IOException {
     try (BufferedReader reader = Files.newBufferedReader(file)) {
       String headerLine = reader.readLine();
@@ -68,7 +68,7 @@ public class MaxquantParser {
         return;
       }
       String[] headers = headerLine.split(SEPARATOR, -1);
-      Pattern intensityHeaderPattern = Pattern.compile(intensityHeader);
+      Pattern intensityHeaderPattern = Pattern.compile(configuration.getHeader(intensity));
       List<SampleHeader> sampleHeaders = IntStream.range(0, headers.length)
           .filter(column -> intensityHeaderPattern.matcher(headers[column]).matches()).boxed()
           .map(column -> {
