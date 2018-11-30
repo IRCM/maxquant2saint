@@ -33,6 +33,18 @@ public class SaintBaitWriter implements Closeable {
     this.writer = writer;
   }
 
+  /**
+   * Writes bait in SAINT format.
+   *
+   * @param sample
+   *          sample name
+   * @param bait
+   *          bait name
+   * @param control
+   *          true if bait is a control, false otherwise
+   * @throws IOException
+   *           could not write to writer
+   */
   public void writeBait(String sample, String bait, boolean control) throws IOException {
     writer.write(sample);
     writer.write(SEPARATOR);

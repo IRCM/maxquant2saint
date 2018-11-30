@@ -33,6 +33,18 @@ public class SaintPreyWriter implements Closeable {
     this.writer = writer;
   }
 
+  /**
+   * Writes prey in SAINT format.
+   *
+   * @param protein
+   *          protein name/id
+   * @param proteinLength
+   *          protein's length
+   * @param gene
+   *          gene name
+   * @throws IOException
+   *           could not write to writer
+   */
   public void writePrey(String protein, int proteinLength, String gene) throws IOException {
     writer.write(protein);
     writer.write(SEPARATOR);

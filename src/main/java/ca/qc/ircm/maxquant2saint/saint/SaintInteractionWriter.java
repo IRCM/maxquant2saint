@@ -36,6 +36,20 @@ public class SaintInteractionWriter implements Closeable {
     this.writer = writer;
   }
 
+  /**
+   * Writes interaction in SAINT format.
+   * 
+   * @param sample
+   *          sample name
+   * @param bait
+   *          bait name
+   * @param prey
+   *          prey name
+   * @param intensity
+   *          intensity
+   * @throws IOException
+   *           could not write to writer
+   */
   public void writeInteraction(String sample, String bait, String prey, double intensity)
       throws IOException {
     writer.write(sample);
