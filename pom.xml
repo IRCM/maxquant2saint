@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (c) 2012 Institut de recherches cliniques de Montreal (IRCM)
+    Copyright (c) 2018 Institut de recherches cliniques de Montreal (IRCM)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
   <name>cross-link-finder</name>
   <description>Search cross-linked peptides</description>
   <url>http://bitbucket.org/ircm/maxquant2saint</url>
-  <inceptionYear>2012</inceptionYear>
+  <inceptionYear>2018</inceptionYear>
   <licenses>
     <license>
       <name>GNU General Public License, version 3</name>
