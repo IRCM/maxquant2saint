@@ -25,12 +25,11 @@
     <relativePath>../ircm-parent/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ca.qc.ircm.proteomique</groupId>
-  <artifactId>cross-link-finder</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <artifactId>maxquant2saint</artifactId>
+  <version>1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>cross-link-finder</name>
-  <description>Search cross-linked peptides</description>
+  <name>maxquant2saint</name>
+  <description>Converts MaxQuant protein groups file to SAINT input files</description>
   <url>http://bitbucket.org/ircm/maxquant2saint</url>
   <inceptionYear>2018</inceptionYear>
   <licenses>
