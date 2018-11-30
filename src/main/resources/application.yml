@@ -31,6 +31,9 @@ maxquant:
     unique-peptides: Unique peptides (.*)
     coverage: Sequence coverage (.*) [%]
 
+fasta:
+  protein-id: '>.*\|(.*)\|'
+
 logging:
   file: ${spring.application.name}.log
 
