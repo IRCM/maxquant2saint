@@ -85,18 +85,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.testfx</groupId>
-      <artifactId>testfx-core</artifactId>
-      <version>${testFx.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testfx</groupId>
-      <artifactId>testfx-junit</artifactId>
-      <version>${testFx.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
@@ -112,11 +100,6 @@
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <version>${inject.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.airhacks</groupId>
-      <artifactId>afterburner.fx</artifactId>
-      <version>${afterburner.fx.version}</version>
     </dependency>
   </dependencies>
   <build>
