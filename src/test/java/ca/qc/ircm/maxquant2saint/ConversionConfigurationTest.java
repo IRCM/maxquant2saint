@@ -38,13 +38,7 @@ public class ConversionConfigurationTest {
     assertEquals(new File("proteinGroups.txt"), configuration.getFile());
     assertEquals(new File("human.fasta"), configuration.getFasta());
     assertEquals(LFQ, configuration.getIntensity());
-    assertEquals(2, configuration.getBaits().size());
-    assertEquals(3, configuration.getBaits().get("flag").size());
-    assertEquals("flag_01", configuration.getBaits().get("flag").get(0));
-    assertEquals("flag_02", configuration.getBaits().get("flag").get(1));
-    assertEquals("flag_03", configuration.getBaits().get("flag").get(2));
-    assertEquals(2, configuration.getBaits().get("polr2a").size());
-    assertEquals("polr2a_01", configuration.getBaits().get("polr2a").get(0));
-    assertEquals("polr2a_02", configuration.getBaits().get("polr2a").get(1));
+    assertEquals("(.*)_\\d+", configuration.getBait());
+    assertEquals("FLAG.*", configuration.getControl());
   }
 }

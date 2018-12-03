@@ -23,6 +23,8 @@ conversion:
   file: proteinGroups.txt
   fasta: human.fasta
   intensity: LFQ
+  bait: '(.*)_\d+'
+  control: 'FLAG.*'
 
 maxquant:
   headers:
@@ -45,16 +47,6 @@ logging:
 ---
 spring:
   profiles: test
-
-conversion:
-  baits:
-    flag: 
-      - flag_01
-      - flag_02
-      - flag_03
-    polr2a: 
-      - polr2a_01
-      - polr2a_02
 
 logging:
   file: test.log

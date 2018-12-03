@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.slf4j.Logger;
@@ -48,11 +51,13 @@ public class MaxquantToSaintConverter {
    */
   public void convert(Path file, Path fasta) {
     Intensity intensity = configuration.getIntensity();
-    Map<String, String> baits = new HashMap<>();
-    if (configuration.getBaits() != null) {
-      configuration.getBaits().entrySet().stream().forEach(
-          entry -> entry.getValue().stream().forEach(sample -> baits.put(sample, entry.getKey())));
-    }
+    Pattern baitPattern = Pattern.compile(configuration.getBait());
+    Pattern controlPattern = Pattern.compile(configuration.getControl());
+    Function<String, String> baitName = sample -> {
+      Matcher controlMatcher = controlPattern.matcher(sample);
+      Matcher baitMatcher = baitPattern.matcher(sample);
+      return !controlMatcher.matches() && baitMatcher.matches() ? baitMatcher.group(1) : sample;
+    };
     Path baitFile = file.resolveSibling("bait.txt");
     Path preyFile = file.resolveSibling("prey.txt");
     Path interactionsFile = file.resolveSibling("interactions.txt");
@@ -60,12 +65,12 @@ public class MaxquantToSaintConverter {
     if (groups.isEmpty()) {
       logger.warn("No protein groups in file {}", file);
     }
-    logger.debug("baits: {}", baits);
     try (SaintBaitWriter writer = new SaintBaitWriter(Files.newBufferedWriter(baitFile))) {
       MaxquantProteinGroup group = groups.get(0);
       for (String sample : group.intensities.keySet()) {
-        String bait = baits.get(sample);
-        writer.writeBait(sample, Objects.toString(bait, sample), false);
+        String bait = baitName.apply(sample);
+        writer.writeBait(sample, Objects.toString(bait, sample),
+            controlPattern.matcher(sample).matches());
       }
     } catch (IOException e) {
       throw new IllegalStateException("Could not write bait file " + baitFile, e);
@@ -110,7 +115,7 @@ public class MaxquantToSaintConverter {
         for (Map.Entry<String, Double> intensities : group.intensities.entrySet()) {
           if (Math.abs(intensities.getValue()) > DELTA) {
             String sample = intensities.getKey();
-            String bait = baits.get(sample);
+            String bait = baitName.apply(sample);
             writer.writeInteraction(intensities.getKey(), Objects.toString(bait, sample),
                 group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
                 intensities.getValue());

@@ -19,8 +19,6 @@ package ca.qc.ircm.maxquant2saint;
 
 import ca.qc.ircm.maxquant2saint.maxquant.Intensity;
 import java.io.File;
-import java.util.List;
-import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +31,8 @@ public class ConversionConfiguration {
   private File file;
   private File fasta;
   private Intensity intensity;
-  private Map<String, List<String>> baits;
+  private String bait;
+  private String control;
 
   public File getFile() {
     return file;
@@ -59,11 +58,19 @@ public class ConversionConfiguration {
     this.intensity = intensity;
   }
 
-  public Map<String, List<String>> getBaits() {
-    return baits;
+  public String getBait() {
+    return bait;
   }
 
-  public void setBaits(Map<String, List<String>> baits) {
-    this.baits = baits;
+  public void setBait(String bait) {
+    this.bait = bait;
+  }
+
+  public String getControl() {
+    return control;
+  }
+
+  public void setControl(String control) {
+    this.control = control;
   }
 }
