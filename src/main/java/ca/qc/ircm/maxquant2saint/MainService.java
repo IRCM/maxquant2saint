@@ -35,6 +35,14 @@ public class MainService {
   @Inject
   private ConversionConfiguration configuration;
 
+  protected MainService() {
+  }
+
+  protected MainService(MaxquantToSaintConverter converter, ConversionConfiguration configuration) {
+    this.converter = converter;
+    this.configuration = configuration;
+  }
+
   /**
    * Convert MaxQuant protein groups file to SAINT input files.
    *
