@@ -6,13 +6,10 @@ import ca.qc.ircm.maxquant2saint.maxquant.MaxquantProteinGroup;
 import ca.qc.ircm.maxquant2saint.maxquant.MaxquantService;
 import ca.qc.ircm.maxquant2saint.saint.Interaction;
 import ca.qc.ircm.maxquant2saint.saint.Prey;
-import ca.qc.ircm.maxquant2saint.saint.SaintBaitWriter;
-import ca.qc.ircm.maxquant2saint.saint.SaintInteractionWriter;
-import ca.qc.ircm.maxquant2saint.saint.SaintPreyWriter;
+import ca.qc.ircm.maxquant2saint.saint.SaintService;
 import ca.qc.ircm.maxquant2saint.saint.Sample;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +36,8 @@ public class MaxquantToSaintConverter {
   private MaxquantService maxquantService;
   @Inject
   private SequenceService sequenceService;
+  @Inject
+  private SaintService saintService;
 
   protected MaxquantToSaintConverter() {
   }
@@ -63,77 +62,66 @@ public class MaxquantToSaintConverter {
       Matcher baitMatcher = baitPattern.matcher(sampleName);
       return !control && baitMatcher.matches() ? baitMatcher.group(1) : sampleName;
     };
-    Path baitFile = file.resolveSibling("bait.txt");
-    Path preyFile = file.resolveSibling("prey.txt");
-    Path interactionsFile = file.resolveSibling("interactions.txt");
     List<MaxquantProteinGroup> groups = maxquantService.proteinGroups(file, intensity);
     if (groups.isEmpty()) {
       logger.warn("No protein groups in file {}", file);
     }
-    try (SaintBaitWriter writer = new SaintBaitWriter(Files.newBufferedWriter(baitFile))) {
-      MaxquantProteinGroup group = groups.get(0);
-      for (String sampleName : group.intensities.keySet()) {
-        Sample sample = new Sample();
-        sample.name = sampleName;
-        sample.bait = baitName.apply(sampleName);
-        sample.control = isControl.apply(sampleName);
-        writer.writeSample(sample);
+    Function<String, Sample> createSample = sampleName -> {
+      Sample sample = new Sample();
+      sample.name = sampleName;
+      sample.bait = baitName.apply(sampleName);
+      sample.control = isControl.apply(sampleName);
+      return sample;
+    };
+    final List<Sample> samples = groups.get(0).intensities.keySet().stream()
+        .map(sampleName -> createSample.apply(sampleName)).collect(Collectors.toList());
+    final Map<String, Integer> lengths;
+    final int averageLength;
+    if (fasta != null) {
+      lengths = sequenceService.sequencesLength(fasta);
+      int tempAverageLength = (int) Math.round(groups.stream()
+          .flatMap(group -> group.proteinIds.stream()).map(protein -> lengths.get(protein))
+          .filter(value -> value != null).mapToInt(value -> value).average().orElse(0));
+      if (tempAverageLength == 0) {
+        tempAverageLength = (int) Math
+            .round(lengths.values().stream().mapToInt(value -> value).average().orElse(0));
       }
-    } catch (IOException e) {
-      throw new IllegalStateException("Could not write bait file " + baitFile, e);
-    }
-    try (SaintPreyWriter writer = new SaintPreyWriter(Files.newBufferedWriter(preyFile))) {
-      final Map<String, Integer> lengths;
-      final int averageLength;
-      if (fasta != null) {
-        lengths = sequenceService.sequencesLength(fasta);
-        int tempAverageLength = (int) Math.round(groups.stream()
-            .flatMap(group -> group.proteinIds.stream()).map(protein -> lengths.get(protein))
-            .filter(value -> value != null).mapToInt(value -> value).average().orElse(0));
-        if (tempAverageLength == 0) {
-          tempAverageLength = (int) Math
-              .round(lengths.values().stream().mapToInt(value -> value).average().orElse(0));
-        }
-        if (tempAverageLength == 0) {
-          logger.warn("Cannot find length of any proteins");
-        }
-        averageLength = tempAverageLength;
-      } else {
+      if (tempAverageLength == 0) {
         logger.warn("Cannot find length of any proteins");
-        lengths = new HashMap<>();
-        averageLength = 0;
       }
-      for (MaxquantProteinGroup group : groups) {
-        int length = group.proteinIds.stream().map(protein -> lengths.get(protein))
-            .filter(value -> value != null).mapToInt(value -> value).max().orElseGet(() -> {
-              logger.info("using average length {} for protein group {}", averageLength,
-                  group.proteinIds);
-              return averageLength;
-            });
-        writer.writePrey(
-            new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
-                length, group.geneNames.stream().collect(Collectors.joining(ELEMENT_SEPARATOR))));
-      }
-    } catch (IOException e) {
-      throw new IllegalStateException("Could not write prey file " + preyFile, e);
+      averageLength = tempAverageLength;
+    } else {
+      logger.warn("Cannot find length of any proteins");
+      lengths = new HashMap<>();
+      averageLength = 0;
     }
-    try (SaintInteractionWriter writer =
-        new SaintInteractionWriter(Files.newBufferedWriter(interactionsFile))) {
-      for (MaxquantProteinGroup group : groups) {
-        for (Map.Entry<String, Double> intensities : group.intensities.entrySet()) {
-          if (Math.abs(intensities.getValue()) > DELTA) {
-            Sample sample = new Sample();
-            sample.name = intensities.getKey();
-            sample.bait = baitName.apply(sample.name);
-            sample.control = isControl.apply(sample.name);
-            writer.writeInteraction(new Interaction(sample,
-                new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR))),
-                intensities.getValue()));
-          }
+    Function<MaxquantProteinGroup, Prey> createPrey = group -> {
+      int length = group.proteinIds.stream().map(protein -> lengths.get(protein))
+          .filter(value -> value != null).mapToInt(value -> value).max().orElseGet(() -> {
+            logger.info("using average length {} for protein group {}", averageLength,
+                group.proteinIds);
+            return averageLength;
+          });
+      return new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
+          length, group.geneNames.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)));
+    };
+    List<Prey> preys =
+        groups.stream().map(group -> createPrey.apply(group)).collect(Collectors.toList());
+    List<Interaction> interactions = new ArrayList<>();
+    for (MaxquantProteinGroup group : groups) {
+      for (Map.Entry<String, Double> intensities : group.intensities.entrySet()) {
+        if (Math.abs(intensities.getValue()) > DELTA) {
+          Sample sample = createSample.apply(intensities.getKey());
+          Prey prey = createPrey.apply(group);
+          interactions.add(new Interaction(sample, prey, intensities.getValue()));
         }
       }
-    } catch (IOException e) {
-      throw new IllegalStateException("Could not write interaction file " + interactionsFile, e);
     }
+    final Path baitFile = file.resolveSibling("bait.txt");
+    final Path preyFile = file.resolveSibling("prey.txt");
+    final Path interactionsFile = file.resolveSibling("interactions.txt");
+    saintService.writeBaits(samples, baitFile);
+    saintService.writePreys(preys, preyFile);
+    saintService.writeInteractions(interactions, interactionsFile);
   }
 }
