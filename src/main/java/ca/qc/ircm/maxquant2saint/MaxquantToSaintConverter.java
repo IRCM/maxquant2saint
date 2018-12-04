@@ -4,16 +4,18 @@ import ca.qc.ircm.maxquant2saint.fasta.SequenceService;
 import ca.qc.ircm.maxquant2saint.maxquant.Intensity;
 import ca.qc.ircm.maxquant2saint.maxquant.MaxquantProteinGroup;
 import ca.qc.ircm.maxquant2saint.maxquant.MaxquantService;
+import ca.qc.ircm.maxquant2saint.saint.Interaction;
+import ca.qc.ircm.maxquant2saint.saint.Prey;
 import ca.qc.ircm.maxquant2saint.saint.SaintBaitWriter;
 import ca.qc.ircm.maxquant2saint.saint.SaintInteractionWriter;
 import ca.qc.ircm.maxquant2saint.saint.SaintPreyWriter;
+import ca.qc.ircm.maxquant2saint.saint.Sample;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,10 +55,13 @@ public class MaxquantToSaintConverter {
     Intensity intensity = configuration.getIntensity();
     Pattern baitPattern = Pattern.compile(configuration.getBait());
     Pattern controlPattern = Pattern.compile(configuration.getControl());
-    Function<String, String> baitName = sample -> {
-      Matcher controlMatcher = controlPattern.matcher(sample);
-      Matcher baitMatcher = baitPattern.matcher(sample);
-      return !controlMatcher.matches() && baitMatcher.matches() ? baitMatcher.group(1) : sample;
+    Function<String, Boolean> isControl = sampleName -> {
+      return controlPattern.matcher(sampleName).matches();
+    };
+    Function<String, String> baitName = sampleName -> {
+      boolean control = isControl.apply(sampleName);
+      Matcher baitMatcher = baitPattern.matcher(sampleName);
+      return !control && baitMatcher.matches() ? baitMatcher.group(1) : sampleName;
     };
     Path baitFile = file.resolveSibling("bait.txt");
     Path preyFile = file.resolveSibling("prey.txt");
@@ -67,10 +72,12 @@ public class MaxquantToSaintConverter {
     }
     try (SaintBaitWriter writer = new SaintBaitWriter(Files.newBufferedWriter(baitFile))) {
       MaxquantProteinGroup group = groups.get(0);
-      for (String sample : group.intensities.keySet()) {
-        String bait = baitName.apply(sample);
-        writer.writeBait(sample, Objects.toString(bait, sample),
-            controlPattern.matcher(sample).matches());
+      for (String sampleName : group.intensities.keySet()) {
+        Sample sample = new Sample();
+        sample.name = sampleName;
+        sample.bait = baitName.apply(sampleName);
+        sample.control = isControl.apply(sampleName);
+        writer.writeSample(sample);
       }
     } catch (IOException e) {
       throw new IllegalStateException("Could not write bait file " + baitFile, e);
@@ -103,8 +110,9 @@ public class MaxquantToSaintConverter {
                   group.proteinIds);
               return averageLength;
             });
-        writer.writePrey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
-            length, group.geneNames.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)));
+        writer.writePrey(
+            new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
+                length, group.geneNames.stream().collect(Collectors.joining(ELEMENT_SEPARATOR))));
       }
     } catch (IOException e) {
       throw new IllegalStateException("Could not write prey file " + preyFile, e);
@@ -114,11 +122,13 @@ public class MaxquantToSaintConverter {
       for (MaxquantProteinGroup group : groups) {
         for (Map.Entry<String, Double> intensities : group.intensities.entrySet()) {
           if (Math.abs(intensities.getValue()) > DELTA) {
-            String sample = intensities.getKey();
-            String bait = baitName.apply(sample);
-            writer.writeInteraction(intensities.getKey(), Objects.toString(bait, sample),
-                group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
-                intensities.getValue());
+            Sample sample = new Sample();
+            sample.name = intensities.getKey();
+            sample.bait = baitName.apply(sample.name);
+            sample.control = isControl.apply(sample.name);
+            writer.writeInteraction(new Interaction(sample,
+                new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR))),
+                intensities.getValue()));
           }
         }
       }

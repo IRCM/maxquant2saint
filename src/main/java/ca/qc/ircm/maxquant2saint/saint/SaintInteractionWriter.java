@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Objects;
 
 /**
  * Writes SAINT interactions files.
@@ -38,27 +39,20 @@ public class SaintInteractionWriter implements Closeable {
 
   /**
    * Writes interaction in SAINT format.
-   * 
-   * @param sample
-   *          sample name
-   * @param bait
-   *          bait name
-   * @param prey
-   *          prey name
-   * @param intensity
-   *          intensity
+   *
+   * @param interaction
+   *          interaction
    * @throws IOException
    *           could not write to writer
    */
-  public void writeInteraction(String sample, String bait, String prey, double intensity)
-      throws IOException {
-    writer.write(sample);
+  public void writeInteraction(Interaction interaction) throws IOException {
+    writer.write(interaction.sample.name);
     writer.write(SEPARATOR);
-    writer.write(bait);
+    writer.write(Objects.toString(interaction.sample.bait, ""));
     writer.write(SEPARATOR);
-    writer.write(prey);
+    writer.write(interaction.prey.id);
     writer.write(SEPARATOR);
-    writer.write(intensityFormatter.format(intensity));
+    writer.write(intensityFormatter.format(interaction.intensity));
     writer.write(NEW_LINE);
   }
 

@@ -20,6 +20,7 @@ package ca.qc.ircm.maxquant2saint.saint;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Objects;
 
 /**
  * Writes SAINT bait files.
@@ -34,23 +35,19 @@ public class SaintBaitWriter implements Closeable {
   }
 
   /**
-   * Writes bait in SAINT format.
+   * Writes sample in SAINT bait format.
    *
    * @param sample
-   *          sample name
-   * @param bait
-   *          bait name
-   * @param control
-   *          true if bait is a control, false otherwise
+   *          sample sample
    * @throws IOException
    *           could not write to writer
    */
-  public void writeBait(String sample, String bait, boolean control) throws IOException {
-    writer.write(sample);
+  public void writeSample(Sample sample) throws IOException {
+    writer.write(sample.name);
     writer.write(SEPARATOR);
-    writer.write(bait);
+    writer.write(Objects.toString(sample.bait, ""));
     writer.write(SEPARATOR);
-    writer.write(control ? "C" : "T");
+    writer.write(sample.control ? "C" : "T");
     writer.write(NEW_LINE);
   }
 

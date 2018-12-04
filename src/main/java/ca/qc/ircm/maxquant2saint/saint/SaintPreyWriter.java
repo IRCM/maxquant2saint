@@ -20,6 +20,7 @@ package ca.qc.ircm.maxquant2saint.saint;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Objects;
 
 /**
  * Writes SAINT prey files.
@@ -36,21 +37,17 @@ public class SaintPreyWriter implements Closeable {
   /**
    * Writes prey in SAINT format.
    *
-   * @param protein
-   *          protein name/id
-   * @param proteinLength
-   *          protein's length
-   * @param gene
-   *          gene name
+   * @param prey
+   *          prey
    * @throws IOException
    *           could not write to writer
    */
-  public void writePrey(String protein, int proteinLength, String gene) throws IOException {
-    writer.write(protein);
+  public void writePrey(Prey prey) throws IOException {
+    writer.write(prey.id);
     writer.write(SEPARATOR);
-    writer.write(String.valueOf(proteinLength));
+    writer.write(String.valueOf(prey.length));
     writer.write(SEPARATOR);
-    writer.write(gene);
+    writer.write(Objects.toString(prey.gene, ""));
     writer.write(NEW_LINE);
   }
 

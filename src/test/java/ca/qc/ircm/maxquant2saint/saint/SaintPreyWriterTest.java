@@ -47,15 +47,15 @@ public class SaintPreyWriterTest {
 
   @Test
   public void writePrey() throws Throwable {
-    writer.writePrey("protein1", 200, "gene1");
-    writer.writePrey("protein2", 210, "gene2");
-    writer.writePrey("protein3", 300, "gene3");
-    writer.writePrey("protein4", 190, "gene4");
+    writer.writePrey(new Prey("protein1", 200, "gene1"));
+    writer.writePrey(new Prey("protein2", 210, "gene2"));
+    writer.writePrey(new Prey("protein3", 300, "gene3"));
+    writer.writePrey(new Prey("protein4", 190, null));
     List<String> lines = Arrays.asList(delegate.toString().split("\r?\n"));
     assertEquals("protein1\t200\tgene1", lines.get(0));
     assertEquals("protein2\t210\tgene2", lines.get(1));
     assertEquals("protein3\t300\tgene3", lines.get(2));
-    assertEquals("protein4\t190\tgene4", lines.get(3));
+    assertEquals("protein4\t190\t", lines.get(3));
   }
 
   @Test

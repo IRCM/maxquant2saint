@@ -47,13 +47,13 @@ public class SaintBaitWriterTest {
 
   @Test
   public void writeBait() throws Throwable {
-    writer.writeBait("my_sample0", "my_control0", true);
-    writer.writeBait("my_sample1", "my_bait1", false);
-    writer.writeBait("my_sample2", "my_bait1", false);
-    writer.writeBait("my_sample3", "my_bait2", false);
-    writer.writeBait("my_sample4", "my_control1", true);
-    writer.writeBait("my_sample5", "my_control2", true);
-    writer.writeBait("my_sample6", "my_control3", true);
+    writer.writeSample(new Sample("my_sample0", "my_control0", true));
+    writer.writeSample(new Sample("my_sample1", "my_bait1", false));
+    writer.writeSample(new Sample("my_sample2", "my_bait1", false));
+    writer.writeSample(new Sample("my_sample3", "my_bait2", false));
+    writer.writeSample(new Sample("my_sample4", "my_control1", true));
+    writer.writeSample(new Sample("my_sample5", "my_control2", true));
+    writer.writeSample(new Sample("my_sample6", null, true));
     List<String> lines = Arrays.asList(delegate.toString().split("\r?\n"));
     assertEquals("my_sample0\tmy_control0\tC", lines.get(0));
     assertEquals("my_sample1\tmy_bait1\tT", lines.get(1));
@@ -61,7 +61,7 @@ public class SaintBaitWriterTest {
     assertEquals("my_sample3\tmy_bait2\tT", lines.get(3));
     assertEquals("my_sample4\tmy_control1\tC", lines.get(4));
     assertEquals("my_sample5\tmy_control2\tC", lines.get(5));
-    assertEquals("my_sample6\tmy_control3\tC", lines.get(6));
+    assertEquals("my_sample6\t\tC", lines.get(6));
   }
 
   @Test
