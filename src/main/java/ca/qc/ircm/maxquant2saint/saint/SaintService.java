@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * Services for SAINT.
  */
+@Service
 public class SaintService {
   /**
    * Write samples as a SAINT bait file.
