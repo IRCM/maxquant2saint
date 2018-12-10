@@ -42,6 +42,14 @@ public class MaxquantToSaintConverter {
   protected MaxquantToSaintConverter() {
   }
 
+  protected MaxquantToSaintConverter(ConversionConfiguration configuration,
+      MaxquantService maxquantService, SequenceService sequenceService, SaintService saintService) {
+    this.configuration = configuration;
+    this.maxquantService = maxquantService;
+    this.sequenceService = sequenceService;
+    this.saintService = saintService;
+  }
+
   /**
    * Convert MaxQuant protein groups file to SAINT input files.
    *
