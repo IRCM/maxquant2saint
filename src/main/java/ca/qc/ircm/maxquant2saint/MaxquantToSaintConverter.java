@@ -27,6 +27,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MaxquantToSaintConverter {
+  // SAINT has a maximum characters for protein length of around 950 characters, so limit protein ids to 40.
+  private static final int MAX_PROTEIN_IDS = 40;
+  private static final int MAX_GENE_IDS = 4;
   private static final double DELTA = 0.0000000001;
   private static final String ELEMENT_SEPARATOR = ";";
   private static final Logger logger = LoggerFactory.getLogger(MaxquantToSaintConverter.class);
@@ -110,8 +113,11 @@ public class MaxquantToSaintConverter {
                 group.proteinIds);
             return averageLength;
           });
-      return new Prey(group.proteinIds.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)),
-          length, group.geneNames.stream().collect(Collectors.joining(ELEMENT_SEPARATOR)));
+      return new Prey(
+          group.proteinIds.stream().limit(MAX_PROTEIN_IDS)
+              .collect(Collectors.joining(ELEMENT_SEPARATOR)),
+          length, group.geneNames.stream().limit(MAX_GENE_IDS)
+              .collect(Collectors.joining(ELEMENT_SEPARATOR)));
     };
     List<Prey> preys =
         groups.stream().map(group -> createPrey.apply(group)).collect(Collectors.toList());
@@ -125,11 +131,18 @@ public class MaxquantToSaintConverter {
         }
       }
     }
+    //    double intensityMin =
+    //        interactions.stream().mapToDouble(inter -> inter.intensity).min().orElse(1.0);
+    //    interactions.stream().forEach(inter -> inter.intensity = inter.intensity / intensityMin);
     final Path baitFile = file.resolveSibling("bait.txt");
     final Path preyFile = file.resolveSibling("prey.txt");
     final Path interactionsFile = file.resolveSibling("interactions.txt");
     saintService.writeBaits(samples, baitFile);
     saintService.writePreys(preys, preyFile);
     saintService.writeInteractions(interactions, interactionsFile);
+  }
+
+  private double log2(double value) {
+    return Math.log(value) / Math.log(2);
   }
 }
