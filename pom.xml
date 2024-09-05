@@ -31,7 +31,7 @@
     <url>https://github.com/IRCM/maxquant2saint/issues</url>
   </issueManagement>
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>17</java.version>
     <start-class>ca.qc.ircm.maxquant2saint.Main</start-class>
     <inject.version>1</inject.version>
     <afterburner.fx.version>1.6.1</afterburner.fx.version>
