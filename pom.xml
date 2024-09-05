@@ -139,4 +139,29 @@
       </plugin>
     </plugins>
   </reporting>
+  <profiles>
+    <profile>
+      <id>test-quick</id>
+      <activation>
+        <property>
+          <name>quick</name>
+        </property>
+      </activation>
+      <properties>
+        <slow-tests.skip>true</slow-tests.skip>
+      </properties>
+    </profile>
+    <profile>
+      <id>site-quick</id>
+      <activation>
+        <property>
+          <name>quick</name>
+        </property>
+      </activation>
+      <properties>
+        <dependency.locations.enabled>false</dependency.locations.enabled>
+        <dependency.details.enabled>false</dependency.details.enabled>
+      </properties>
+    </profile>
+  </profiles>
 </project>
