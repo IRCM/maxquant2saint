@@ -6,13 +6,10 @@ import static org.mockito.Mockito.when;
 import ca.qc.ircm.maxquant2saint.test.config.TestAnnotations;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class MainServiceTest {
   private MainService mainService;
@@ -26,7 +23,7 @@ public class MainServiceTest {
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     mainService = new MainService(converter, configuration);
     when(configuration.getFile()).thenReturn(file.toFile());

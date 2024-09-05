@@ -1,7 +1,7 @@
 package ca.qc.ircm.maxquant2saint;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,15 +24,12 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class MaxquantToSaintConverterTest {
   private static final int MAX_GROUPS = 200;
@@ -65,7 +62,7 @@ public class MaxquantToSaintConverterTest {
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     converter =
         new MaxquantToSaintConverter(configuration, maxquantService, sequenceService, saintService);

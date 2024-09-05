@@ -1,7 +1,8 @@
 package ca.qc.ircm.maxquant2saint.maxquant;
 
 import static ca.qc.ircm.maxquant2saint.maxquant.Intensity.LFQ;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -14,13 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class MaxquantServiceTest {
   private MaxquantService maxquantService;
@@ -36,7 +34,7 @@ public class MaxquantServiceTest {
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     maxquantService = new MaxquantService(maxquantParser);
   }
@@ -60,10 +58,12 @@ public class MaxquantServiceTest {
     assertEquals(group3, groups.get(2));
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void proteinGroups_IoException() throws Throwable {
     Path file = Paths.get(getClass().getResource("/proteinGroups_.txt").toURI());
     doThrow(new IOException("test")).when(maxquantParser).parse(any(), any(), any());
-    maxquantService.proteinGroups(file, LFQ);
+    assertThrows(IllegalStateException.class, () -> {
+      maxquantService.proteinGroups(file, LFQ);
+    });
   }
 }

@@ -2,7 +2,7 @@ package ca.qc.ircm.maxquant2saint.maxquant;
 
 import static ca.qc.ircm.maxquant2saint.maxquant.Intensity.LFQ;
 import static ca.qc.ircm.maxquant2saint.maxquant.Intensity.PEPTIDES;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,15 +11,12 @@ import ca.qc.ircm.maxquant2saint.test.config.TestAnnotations;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class MaxquantParserTest {
   private static final double DELTA = 0.01;
@@ -36,7 +33,7 @@ public class MaxquantParserTest {
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     maxquantParser = new MaxquantParser(configuration);
     when(configuration.getHeaders()).thenReturn(configurationHeaders);

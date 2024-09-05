@@ -1,6 +1,6 @@
 package ca.qc.ircm.maxquant2saint.saint;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 import ca.qc.ircm.maxquant2saint.test.config.TestAnnotations;
@@ -8,13 +8,10 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class SaintInteractionWriterTest {
   private SaintInteractionWriter writer;
@@ -23,7 +20,7 @@ public class SaintInteractionWriterTest {
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     writer = new SaintInteractionWriter(delegate);
   }

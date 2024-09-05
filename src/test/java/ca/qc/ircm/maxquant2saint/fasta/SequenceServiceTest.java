@@ -1,26 +1,23 @@
 package ca.qc.ircm.maxquant2saint.fasta;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import ca.qc.ircm.maxquant2saint.test.config.TestAnnotations;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class SequenceServiceTest {
   private SequenceService sequenceService;
   @Mock
   private FastaConfiguration configuration;
 
-  @Before
+  @BeforeEach
   public void beforeTest() {
     sequenceService = new SequenceService(configuration);
     when(configuration.getProteinId()).thenReturn(">.*\\|(.*)\\|");

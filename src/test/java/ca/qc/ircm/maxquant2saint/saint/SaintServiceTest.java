@@ -1,30 +1,26 @@
 package ca.qc.ircm.maxquant2saint.saint;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ca.qc.ircm.maxquant2saint.test.config.TestAnnotations;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestAnnotations
 public class SaintServiceTest {
+  @TempDir
+  public Path temporaryFolder;
   private SaintService service;
-  @Rule
-  public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
   /**
    * Before test.
    */
-  @Before
+  @BeforeEach
   public void beforeTest() {
     service = new SaintService();
   }
@@ -39,7 +35,7 @@ public class SaintServiceTest {
     samples.add(new Sample("my_sample4", "my_control1", true));
     samples.add(new Sample("my_sample5", "my_control2", true));
     samples.add(new Sample("my_sample6", null, true));
-    Path file = temporaryFolder.newFile("bait.txt").toPath();
+    Path file = Files.createFile(temporaryFolder.resolve("bait.txt"));
     service.writeBaits(samples, file);
     List<String> lines = Files.readAllLines(file);
     assertEquals("my_sample0\tmy_control0\tC", lines.get(0));
@@ -58,7 +54,7 @@ public class SaintServiceTest {
     preys.add(new Prey("protein2", 210, "gene2"));
     preys.add(new Prey("protein3", 300, "gene3"));
     preys.add(new Prey("protein4", 190, null));
-    Path file = temporaryFolder.newFile("prey.txt").toPath();
+    Path file = Files.createFile(temporaryFolder.resolve("prey.txt"));
     service.writePreys(preys, file);
     List<String> lines = Files.readAllLines(file);
     assertEquals("protein1\t200\tgene1", lines.get(0));
@@ -84,7 +80,7 @@ public class SaintServiceTest {
         .add(new Interaction(new Sample("my_sample4", "my_bait2", false), new Prey("gene2"), 27.1));
     interactions
         .add(new Interaction(new Sample("my_sample5", null, true), new Prey("gene1"), 13.0));
-    Path file = temporaryFolder.newFile("interactions.txt").toPath();
+    Path file = Files.createFile(temporaryFolder.resolve("interactions.txt"));
     service.writeInteractions(interactions, file);
     List<String> lines = Files.readAllLines(file);
     assertEquals("my_sample1\tmy_control1\tgene1\t10", lines.get(0));
