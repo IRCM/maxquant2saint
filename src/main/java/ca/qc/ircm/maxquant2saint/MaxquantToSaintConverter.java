@@ -17,9 +17,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,13 +33,13 @@ public class MaxquantToSaintConverter {
   private static final double DELTA = 0.0000000001;
   private static final String ELEMENT_SEPARATOR = ";";
   private static final Logger logger = LoggerFactory.getLogger(MaxquantToSaintConverter.class);
-  @Inject
+  @Autowired
   private ConversionConfiguration configuration;
-  @Inject
+  @Autowired
   private MaxquantService maxquantService;
-  @Inject
+  @Autowired
   private SequenceService sequenceService;
-  @Inject
+  @Autowired
   private SaintService saintService;
 
   protected MaxquantToSaintConverter() {

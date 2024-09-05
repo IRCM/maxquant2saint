@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class MaxquantParser {
   private static final String SEPARATOR = "\t";
   private static final String ELEMENT_SEPARATOR = ";";
-  @Inject
+  @Autowired
   private MaxquantConfiguration configuration;
 
   protected MaxquantParser() {
