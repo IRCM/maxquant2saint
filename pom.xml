@@ -37,6 +37,7 @@
     <afterburner.fx.version>1.6.1</afterburner.fx.version>
     <testFx.version>4.0.4-alpha</testFx.version>
     <maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
+    <spotbugs-maven-plugin.version>4.7.1.1</spotbugs-maven-plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -132,9 +133,9 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-maven-plugin.version}</version>
       </plugin>
     </plugins>
   </reporting>
