@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
   <name>maxquant2saint</name>
   <description>Converts MaxQuant protein groups file to SAINT input files</description>
-  <url>http://bitbucket.org/ircm/maxquant2saint</url>
+  <url>https://github.com/IRCM/maxquant2saint</url>
   <inceptionYear>2018</inceptionYear>
   <licenses>
     <license>
@@ -22,13 +22,13 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:git:git@bitbucket.org:ircm/maxquant2saint.git</connection>
-    <developerConnection>scm:git:git@bitbucket.org:ircm/maxquant2saint.git</developerConnection>
-    <url>https://bitbucket.org/ircm/maxquant2saint</url>
+    <connection>scm:git:git@https://github.com/IRCM/maxquant2saint.git</connection>
+    <developerConnection>scm:git:git@https://github.com/IRCM/maxquant2saint.git</developerConnection>
+    <url>https://github.com/IRCM/maxquant2saint</url>
   </scm>
   <issueManagement>
-    <system>Bitbucket</system>
-    <url>https://bitbucket.org/ircm/maxquant2saint/issues</url>
+    <system>GitHub</system>
+    <url>https://github.com/IRCM/maxquant2saint/issues</url>
   </issueManagement>
   <properties>
     <java.version>1.8</java.version>
