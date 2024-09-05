@@ -48,7 +48,7 @@ public class MaxquantParserTest {
 
   @Test
   public void parse_Lfq() throws Throwable {
-    Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
+    Path file = Paths.get(getClass().getResource("/proteinGroups_.txt").toURI());
     maxquantParser.parse(file, LFQ, handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);
@@ -80,7 +80,7 @@ public class MaxquantParserTest {
 
   @Test
   public void parse_Peptides() throws Throwable {
-    Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
+    Path file = Paths.get(getClass().getResource("/proteinGroups_.txt").toURI());
     maxquantParser.parse(file, PEPTIDES, handler);
     verify(handler, times(27)).accept(groupCaptor.capture());
     MaxquantProteinGroup group = groupCaptor.getAllValues().get(1);

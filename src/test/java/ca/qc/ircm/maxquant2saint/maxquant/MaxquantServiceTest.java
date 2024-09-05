@@ -43,7 +43,7 @@ public class MaxquantServiceTest {
 
   @Test
   public void proteinGroups() throws Throwable {
-    Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
+    Path file = Paths.get(getClass().getResource("/proteinGroups_.txt").toURI());
     doAnswer(i -> {
       @SuppressWarnings("unchecked")
       Consumer<MaxquantProteinGroup> handler = (Consumer<MaxquantProteinGroup>) i.getArgument(2);
@@ -62,7 +62,7 @@ public class MaxquantServiceTest {
 
   @Test(expected = IllegalStateException.class)
   public void proteinGroups_IoException() throws Throwable {
-    Path file = Paths.get(getClass().getResource("/proteinGroups.txt").toURI());
+    Path file = Paths.get(getClass().getResource("/proteinGroups_.txt").toURI());
     doThrow(new IOException("test")).when(maxquantParser).parse(any(), any(), any());
     maxquantService.proteinGroups(file, LFQ);
   }
