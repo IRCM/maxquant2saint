@@ -29,7 +29,9 @@ logging:
 
 ---
 spring:
-  profiles: test
+  config:
+    activate:
+      on-profile: test
 
 logging:
   file: test.log
