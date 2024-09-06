@@ -1,12 +1,12 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
-import static ca.qc.ircm.maxquant2saint.AboutDialog.ABOUT_DIALOG;
-import static ca.qc.ircm.maxquant2saint.AboutDialog.COMMIT;
-import static ca.qc.ircm.maxquant2saint.AboutDialog.EXPANDABLE;
-import static ca.qc.ircm.maxquant2saint.AboutDialog.HEADER;
-import static ca.qc.ircm.maxquant2saint.AboutDialog.TITLE;
-import static ca.qc.ircm.maxquant2saint.AboutDialog.VERSION;
 import static ca.qc.ircm.maxquant2saint.Constants.messagePrefix;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.ABOUT_DIALOG;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.COMMIT;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.EXPANDABLE;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.HEADER;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.TITLE;
+import static ca.qc.ircm.maxquant2saint.gui.AboutDialog.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;

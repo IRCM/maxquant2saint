@@ -1,8 +1,12 @@
 package ca.qc.ircm.maxquant2saint;
 
 import static ca.qc.ircm.maxquant2saint.Constants.messagePrefix;
-import static ca.qc.ircm.maxquant2saint.MainPane.TITLE;
+import static ca.qc.ircm.maxquant2saint.gui.MainPane.TITLE;
 
+import ca.qc.ircm.maxquant2saint.gui.AbstractSpringBootJavafxApplication;
+import ca.qc.ircm.maxquant2saint.gui.ApplicationStarted;
+import ca.qc.ircm.maxquant2saint.gui.MainPane;
+import ca.qc.ircm.maxquant2saint.gui.SplashScreen;
 import java.util.Locale;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

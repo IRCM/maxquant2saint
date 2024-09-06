@@ -1,6 +1,6 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
-import static ca.qc.ircm.maxquant2saint.ProgressDialog.PROGRESS_DIALOG;
+import static ca.qc.ircm.maxquant2saint.gui.ProgressDialog.PROGRESS_DIALOG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,4 +1,4 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.control.ButtonType;

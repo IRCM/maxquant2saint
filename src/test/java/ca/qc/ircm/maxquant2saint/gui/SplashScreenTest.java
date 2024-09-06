@@ -1,9 +1,9 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
 import static ca.qc.ircm.maxquant2saint.Constants.messagePrefix;
-import static ca.qc.ircm.maxquant2saint.SplashScreen.ERROR_CONTENT;
-import static ca.qc.ircm.maxquant2saint.SplashScreen.MESSAGE;
-import static ca.qc.ircm.maxquant2saint.SplashScreen.SPLASH_SCREEN;
+import static ca.qc.ircm.maxquant2saint.gui.SplashScreen.ERROR_CONTENT;
+import static ca.qc.ircm.maxquant2saint.gui.SplashScreen.MESSAGE;
+import static ca.qc.ircm.maxquant2saint.gui.SplashScreen.SPLASH_SCREEN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

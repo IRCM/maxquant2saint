@@ -1,4 +1,4 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
 import static ca.qc.ircm.maxquant2saint.Constants.messagePrefix;
 
@@ -64,10 +64,6 @@ public class SplashScreen extends Preloader {
    */
   @Override
   public void start(Stage stage) {
-    System.out.println(messageSource);
-    System.out.println(MESSAGE_PREFIX + MESSAGE);
-    System.out
-        .println(messageSource.getMessage(MESSAGE_PREFIX + MESSAGE, null, Locale.getDefault()));
     layout.getChildren().add(message);
     layout.setId(SPLASH_SCREEN);
     layout.setCursor(Cursor.WAIT);

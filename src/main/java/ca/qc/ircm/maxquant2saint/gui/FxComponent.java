@@ -1,4 +1,4 @@
-package ca.qc.ircm.maxquant2saint;
+package ca.qc.ircm.maxquant2saint.gui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
