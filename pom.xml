@@ -33,9 +33,10 @@
   <properties>
     <java.version>17</java.version>
     <start-class>ca.qc.ircm.maxquant2saint.Main</start-class>
+    <application.title>MaxQuant 2 SAINT</application.title>
     <inject.version>1</inject.version>
     <afterburner.fx.version>1.6.1</afterburner.fx.version>
-    <testFx.version>4.0.4-alpha</testFx.version>
+    <testfx.version>4.0.16-alpha</testfx.version>
     <maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
     <spotbugs-maven-plugin.version>4.7.1.1</spotbugs-maven-plugin.version>
   </properties>
@@ -43,6 +44,24 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-core</artifactId>
+      <version>${testfx.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-junit5</artifactId>
+      <version>${testfx.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>openjfx-monocle</artifactId>
+      <version>17.0.10</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -60,6 +79,19 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/application*.yml</include>
+          <include>**/application*.yaml</include>
+          <include>**/application*.properties</include>
+          <include>jpackage/**</include>
+          <include>messages*.properties</include>
+        </includes>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -68,6 +100,11 @@
             <excludes>
               <exclude>ca/qc/ircm/maxquant2saint/test/**/*.java</exclude>
             </excludes>
+            <argLine>--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+              --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
+              --add-exports javafx.base/com.sun.javafx.logging=ALL-UNNAMED
+              --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
+            </argLine>
           </configuration>
         </plugin>
         <plugin>
