@@ -36,7 +36,7 @@
     <application.title>MaxQuant 2 SAINT</application.title>
     <inject.version>1</inject.version>
     <afterburner.fx.version>1.6.1</afterburner.fx.version>
-    <testfx.version>4.0.16-alpha</testfx.version>
+    <testfx.version>4.0.18</testfx.version>
     <maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
     <spotbugs-maven-plugin.version>4.7.1.1</spotbugs-maven-plugin.version>
   </properties>
