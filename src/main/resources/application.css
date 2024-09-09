@@ -1,4 +1,22 @@
-#about-dialog .expandable {
+#maxquant {
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-border-width: 1 0;
 	-fx-padding: 10;
+	-fx-spacing: 5;
+}
+#maxquant .h2 {
+	-fx-font-size: 2em;
+}
+#maxquant .hbox {
+	-fx-spacing: 10;
+	-fx-alignment: center-left;
+}
+#main .buttons {
+	-fx-padding: 10;
+	-fx-spacing: 10;
+}
+#about-dialog .expandable {
+    -fx-padding: 10;
 	-fx-spacing: 10;
 }
